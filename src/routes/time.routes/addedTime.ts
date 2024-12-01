@@ -11,24 +11,37 @@ export const addedTime = (app:FastifyInstance) => {
     app.put("/usertime/:id/:time", async (req:FastifyRequest<{Params:Params,Body:Body}>,res:FastifyReply)=>{
         const id = req.params.id
         const time = Number(req.params.time)
-    
-        const user = await prisma.timeUser.findUnique({
-            where:{id},
-        }).then(async (user)=>{
-            if(user){
-                const timeAdded = user.time + time
-                await prisma.timeUser.update({
-                    where:{id},
-                    data:{
-                        time:timeAdded
-                    }
+        let oldTime = 0
+        const userExist = await prisma.timeUser.findUnique({
+            where:{id}
+        }).then((response)=>{
+            if(response == null){
+                const createUser = prisma.timeUser.create({
+                    data:{id,time}
                 }).then((response)=>{
-                    return res.status(200).send({id:response.id, time:response.time})
+                    console.log("usuário criado", response)
+                    return response
                 }).catch((err)=>{
-                    return res.status(400).send("Erro ao adicionar tempo")
+                    console.log(err)
+                    return {"msg":"Erro ao criar usuário"}
+                })
+                return createUser
+            }else{
+                oldTime = response.time
+                console.log("Usuário encontrado")
+                const updateTime = prisma.timeUser.update({
+                    where:{id},
+                    data:{time:time+oldTime}
+                }).then((response)=>{
+                    console.log("Tempo atualizado", response)
+                    return res.status(200).send(response)
+                }).catch((err)=>{
+                    console.log(err)
+                    res.status(400).send({"msg":"Erro ao atualizar usuário"})
                 })
             }
+        }).catch((err)=>{
+            console.log(err)
+            return {"msg":"Erro ao buscar usuário"}
         })
-        
-    })
-}
+})}

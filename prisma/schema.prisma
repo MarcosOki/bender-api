@@ -16,5 +16,6 @@ datasource db {
 model TimeUser {
   id String @unique
   time Int
+  createdAt DateTime @default(now())
   @@map("timeuser")
 }
