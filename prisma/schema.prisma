@@ -13,9 +13,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model TimeUser {
+model User {
   id String @unique
-  time Int
+  time TimeUser?
+  xp Int
+  @@map("user")
+}
+
+model TimeUser {
+  id        String   @unique
+  user User @relation(fields: [id], references: [id])
+  time      Int
   createdAt DateTime @default(now())
+
   @@map("timeuser")
 }
