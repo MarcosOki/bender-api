@@ -14,16 +14,23 @@ datasource db {
 }
 
 model User {
-  id String @unique
+  id   String    @unique
   time TimeUser?
-  xp Int
+  xp   Xp?
   @@map("user")
+}
+
+model Xp {
+  user       User   @relation(fields: [id], references: [id])
+  id         String @unique
+  xpMessages Int
+  @@map("xp")
 }
 
 model TimeUser {
   id        String   @unique
-  user User @relation(fields: [id], references: [id])
-  time      Int
+  user      User     @relation(fields: [id], references: [id])
+  time      Int 
   createdAt DateTime @default(now())
 
   @@map("timeuser")
