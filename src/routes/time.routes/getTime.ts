@@ -10,7 +10,7 @@ interface Params{
 export const getTime = (app:FastifyInstance)=>{
     app.get("/usertime/:id", async (req:FastifyRequest<{Params:Params}>, res:FastifyReply)=>{
         const id = req.params.id
-        const response = await prisma.timeUser.findUnique({
+        const response = await prisma.user.findUnique({
             where:{id}
         }).then((response)=>{
             if(response == null){

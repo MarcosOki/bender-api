@@ -5,4 +5,4 @@ import { getTime } from "./getTime"
 export const timeImports = (app:FastifyInstance) => {
     app.register(addedTime)
     app.register(getTime)
-}
+}   
