@@ -13,7 +13,13 @@ export const addedXpMessages = (app:FastifyInstance)=>{
         const xp = req.params.xp
         const response = await prisma.user.update({
             where:{id},
-            data:{}
+           data:{xp:{update:{xpMessages:Number(xp)}}}
+        }).then((response)=>{
+            if(response != null){
+                return res.status(200).send({msg:"xp adicionado"})
+            }else{
+                return res.status(400).send({err:"Erro ao adicionar xp"})
+            }
         })
     })
 }
