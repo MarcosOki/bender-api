@@ -9,15 +9,13 @@ interface Params{
 
 export const addedTime = (app:FastifyInstance) => {
     app.put("/usertime/:id/:time", async (req:FastifyRequest<{Params:Params,Body:Body}>,res:FastifyReply)=>{
-        console.log("Chegou aqui")
         const id = req.params.id
         const time = Number(req.params.time)
-        let oldTime = 0
         const userExist = await prisma.user.findUnique({
             where:{id}
         }).then(async(response)=>{
             if(response == null){
-                const createUser = prisma.user.create({
+                const createUser = await prisma.user.create({
                     data:{id,time:{create:{time}}}
                 }).then((response)=>{
                     res.status(200).send({msg:"usuário criado", user: response})
@@ -36,10 +34,9 @@ export const addedTime = (app:FastifyInstance) => {
                         console.log("Usuário não encontrado")
                         return {"msg":"Erro ao buscar usuário"}
                     })
-                console.log(getOldTime)
-                const updateTime = prisma.user.update({
+                const updateTime = await prisma.timeUser.update({
                     where:{id},
-                    data:{time:{update: {time: time+Number(getOldTime)}}}
+                    data:{time:time+Number(getOldTime)}
                 }).then((response)=>{
                     console.log("Tempo atualizado", response)
                     return res.status(200).send(response)
