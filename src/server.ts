@@ -7,6 +7,7 @@ const app = fastify()
 app.register(routes)
 app.register(cors,{origin:"*", methods:["*"]})
 
-app.listen({port:3000},(err,adress)=>{
+app.listen({port:process.env.PORT ? Number(process.env.PORT) : 3000 },(err,adress)=>{
+    console.log("Server Running !!!")
     console.log(err ? err : adress)
 })
