@@ -9,6 +9,7 @@ interface Params{
 
 export const addedTime = (app:FastifyInstance) => {
     app.put("/usertime/:id/:time", async (req:FastifyRequest<{Params:Params,Body:Body}>,res:FastifyReply)=>{
+        console.log("Chegou aqui")
         const id = req.params.id
         const time = Number(req.params.time)
         let oldTime = 0
