@@ -15,7 +15,7 @@ export const addedTime = (app:FastifyInstance) => {
         let oldTime = 0
         const userExist = await prisma.user.findUnique({
             where:{id}
-        }).then((response)=>{
+        }).then(async(response)=>{
             if(response == null){
                 const createUser = prisma.user.create({
                     data:{id,time:{create:{time}}}
@@ -28,18 +28,18 @@ export const addedTime = (app:FastifyInstance) => {
                 })
                 return createUser
             }else{
-                const getOldTime = prisma.timeUser.findUnique({
-                    where:{id:id}}).then((response)=>{
+                const getOldTime = await prisma.timeUser.findUnique({
+                    where:{id}}).then((response)=>{
                         console.log("Usuário encontrado")
                         return response?.time
                     }).catch((err)=>{
                         console.log("Usuário não encontrado")
                         return {"msg":"Erro ao buscar usuário"}
                     })
-
+                console.log(getOldTime)
                 const updateTime = prisma.user.update({
                     where:{id},
-                    data:{time:{update: {time: time+oldTime}}}
+                    data:{time:{update: {time: time+Number(getOldTime)}}}
                 }).then((response)=>{
                     console.log("Tempo atualizado", response)
                     return res.status(200).send(response)
