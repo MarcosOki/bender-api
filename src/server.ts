@@ -3,6 +3,7 @@ import cors from "@fastify/cors"
 import getTime from "./features/time/getTime/route"
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import addTime from "./features/time/addTime/route";
 
 const app = fastify()
 
@@ -23,8 +24,9 @@ async function startServer() {
         routePrefix: "/docs",
         staticCSP: true,
     });
-    
+
     app.route(getTime)
+    app.route(addTime)
     
     app.listen({host:"0.0.0.0",port:process.env.PORT ? Number(process.env.PORT) : 3000 },(err,adress)=>{
         console.log("Server Running !!!")

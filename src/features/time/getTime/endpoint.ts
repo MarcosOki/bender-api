@@ -9,7 +9,7 @@ interface Params{
 interface Response {
     code:number,
     msg:string,
-    data?:object
+    data?:number
 }
 export default async function endpoint(req:FastifyRequest<{Params:Params}>, res:FastifyReply){
     const id = req.params.id
