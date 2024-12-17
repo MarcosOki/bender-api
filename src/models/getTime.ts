@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 interface Response {
     code: number;
     msg: string;
-    data?:number
+    data?:object
 }
 
 export default async function getTime(id: string): Promise<Response> {
@@ -17,7 +17,7 @@ export default async function getTime(id: string): Promise<Response> {
         if (response === null) {
             return { code: 404, msg: "Usuário não encontrado"};
         } else {
-            return { code: 200, msg: "Usuário encontrado", data:response.time };
+            return { code: 200, msg: "Usuário encontrado", data:response };
         }
     } catch (err) {
         console.error(err);
