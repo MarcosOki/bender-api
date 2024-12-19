@@ -8,7 +8,7 @@ interface Response {
     data?:object
 }
 
-export default async function getTime(id: string): Promise<Response> {
+export default async function getTime(id: string) {
     try {
         const response = await prisma.timeUser.findUnique({
             where: { id },
