@@ -5,6 +5,7 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import addTime from "./features/time/addTime/route";
 import createUser from "./features/user/createUser/route"; 
+import getUser from "./features/user/getUser/route"
 const app = fastify()
 app.register(cors,{origin:"*", methods:["*"]})
 
@@ -27,6 +28,7 @@ async function startServer() {
     app.route(getTime)
     app.route(addTime)
     app.route(createUser)
+    app.route(getUser)
     
     app.listen({host:"0.0.0.0",port:process.env.PORT ? Number(process.env.PORT) : 3000 },(err,adress)=>{
         console.log("Server Running !!!")

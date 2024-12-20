@@ -12,8 +12,9 @@ interface ResponseAddTime{
 export default async function addTime(id:string,time:string){
     try {
         const oldTime = await getTime(id)
+        console.log(oldTime)
         if(oldTime.code == 200){
-            const result = await prisma.timeUser.update({where:{id},data:{time:Number(time)+Number(oldTime.data)}})
+            const result = await prisma.timeUser.update({where:{id},data:{time:Number(time)+Number(oldTime.data?.time)}})
             if(result != null){
                 return {code:200, msg:"Tempo adicionado com sucesso", data:result}
             }else{
